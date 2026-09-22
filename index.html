@@ -1,14 +1,620 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Concreta Studio — Diseño en Concreto</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Concreta Studio — Diseño en Concreto</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --negro: #0a0a0a;
+    --negro-suave: #111111;
+    --dorado: #c9a84c;
+    --dorado-claro: #e2c07a;
+    --dorado-opaco: rgba(201,168,76,0.15);
+    --gris: #2a2a2a;
+    --gris-claro: #888;
+    --blanco: #f0ece4;
+    --box-sizing: border-box;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--negro);
+  }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    background: var(--negro);
+    color: var(--blanco);
+    overflow-x: hidden;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: env(safe-area-inset-top, 0px);
+    left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+  }
+
+  .nav-logo {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 0.28em;
+    color: var(--dorado);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gris-claro);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--dorado); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 64px 80px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--dorado);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--dorado);
+    flex-shrink: 0;
+  }
+
+  .hero-title {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: clamp(52px, 6vw, 88px);
+    line-height: 1.05;
+    color: var(--blanco);
+    margin-bottom: 8px;
+  }
+
+  .hero-title em {
+    
+    color: var(--dorado);
+  }
+
+  .hero-subtitle {
+    font-family: 'Jost', sans-serif;
+    
+    font-size: clamp(16px, 2vw, 22px);
+    color: var(--gris-claro);
+    font-weight: 300;
+    margin-bottom: 48px;
+    line-height: 1.5;
+    max-width: 360px;
+  }
+
+  .hero-desc {
+    font-size: 13px;
+    line-height: 1.9;
+    color: rgba(240,236,228,0.6);
+    max-width: 340px;
+    margin-bottom: 56px;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 14px 40px;
+    border: 1px solid var(--dorado);
+    color: var(--dorado);
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+    align-self: flex-start;
+  }
+
+  .btn-primary:hover {
+    background: var(--dorado);
+    color: var(--negro);
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--negro) 0%, transparent 30%),
+                linear-gradient(to top, var(--negro) 0%, transparent 20%);
+    z-index: 1;
+  }
+
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.75) contrast(1.05);
+    display: block;
+  }
+
+  /* ─── LOGO CENTERED ─── */
+  .logo-section {
+    padding: 80px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    background: var(--negro-suave);
+  }
+
+  .logo-cs {
+    width: 80px;
+    height: 80px;
+  }
+
+  .logo-name {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 0.5em;
+    color: var(--dorado);
+    text-transform: uppercase;
+  }
+
+  .logo-tagline {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gris-claro);
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  /* ─── ABOUT ─── */
+  .about {
+    padding: 120px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .about-text h2 {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: clamp(36px, 4vw, 60px);
+    line-height: 1.1;
+    color: var(--blanco);
+    margin-bottom: 32px;
+  }
+
+  .about-text h2 em {
+    
+    color: var(--dorado);
+  }
+
+  .about-text p {
+    font-size: 14px;
+    line-height: 2;
+    color: rgba(240,236,228,0.6);
+    max-width: 420px;
+    margin-bottom: 20px;
+    letter-spacing: 0.02em;
+  }
+
+  .about-pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .pillar {
+    padding: 32px 28px;
+    background: var(--negro-suave);
+    border: 1px solid rgba(201,168,76,0.08);
+  }
+
+  .pillar-icon {
+    width: 24px;
+    height: 24px;
+    stroke: var(--dorado);
+    fill: none;
+    stroke-width: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .pillar h3 {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--blanco);
+    margin-bottom: 8px;
+  }
+
+  .pillar p {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--gris-claro);
+    letter-spacing: 0.02em;
+  }
+
+  /* ─── PRODUCTOS ─── */
+  .products {
+    padding: 80px 80px 120px;
+    background: var(--negro-suave);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: 64px;
+  }
+
+  .section-header h2 {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: clamp(32px, 4vw, 52px);
+    color: var(--blanco);
+  }
+
+  .section-header span {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--dorado);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .product-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+    cursor: pointer;
+  }
+
+  .product-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7) contrast(1.1);
+    transition: transform 0.6s ease, filter 0.4s;
+    display: block;
+  }
+
+  .product-card:hover img {
+    transform: scale(1.04);
+    filter: brightness(0.55) contrast(1.1);
+  }
+
+  .product-card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 32px 28px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+    transform: translateY(8px);
+    transition: transform 0.4s;
+  }
+
+  .product-card:hover .product-card-info { transform: translateY(0); }
+
+  .product-tag {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--dorado);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .product-name {
+    font-family: 'Jost', sans-serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--blanco);
+    line-height: 1.1;
+  }
+
+  /* ─── FEATURE PRODUCT ─── */
+  .feature {
+    padding: 0 80px 120px;
+    display: grid;
+    grid-template-columns: 55% 45%;
+    gap: 0;
+  }
+
+  .feature-img {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+  }
+
+  .feature-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8) contrast(1.05);
+    display: block;
+  }
+
+  .feature-text {
+    background: #111;
+    padding: 64px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .feature-text .label {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--dorado);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .feature-text h2 {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: clamp(30px, 3vw, 48px);
+    line-height: 1.1;
+    color: var(--blanco);
+    margin-bottom: 16px;
+  }
+
+  .feature-text .sub {
+    font-family: 'Jost', sans-serif;
+    
+    font-size: 15px;
+    color: var(--gris-claro);
+    margin-bottom: 32px;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+  }
+
+  .feature-text p {
+    font-size: 13px;
+    line-height: 1.95;
+    color: rgba(240,236,228,0.55);
+    margin-bottom: 40px;
+    letter-spacing: 0.02em;
+  }
+
+  .feature-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding-top: 32px;
+  }
+
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+
+  .spec-row span:first-child { color: var(--gris-claro); }
+  .spec-row span:last-child { color: var(--dorado-claro); }
+
+  /* ─── STATS ─── */
+  .stats {
+    padding: 80px;
+    border-top: 1px solid rgba(201,168,76,0.12);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    background: var(--negro);
+  }
+
+  .stat {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .stat-num {
+    font-family: 'Jost', sans-serif;
+    font-size: 56px;
+    font-weight: 300;
+    color: var(--dorado);
+    line-height: 1;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--gris-claro);
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+
+  /* ─── SOCIAL / FOOTER ─── */
+  .footer {
+    padding: 80px;
+    background: var(--negro-suave);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .footer-left h2 {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: clamp(28px, 3.5vw, 48px);
+    line-height: 1.15;
+    color: var(--blanco);
+    margin-bottom: 16px;
+  }
+
+  .footer-left h2 em {
+    
+    color: var(--dorado);
+  }
+
+  .footer-left p {
+    font-size: 13px;
+    line-height: 1.9;
+    color: rgba(240,236,228,0.5);
+    max-width: 380px;
+    margin-bottom: 40px;
+  }
+
+  .social-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .social-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    text-decoration: none;
+    transition: padding-left 0.3s;
+  }
+
+  .social-row:first-child { border-top: 1px solid rgba(201,168,76,0.1); }
+  .social-row:hover { padding-left: 8px; }
+
+  .social-icon {
+    width: 32px;
+    height: 32px;
+    fill: var(--dorado);
+    flex-shrink: 0;
+  }
+
+  .social-info { flex: 1; }
+  .social-platform {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--gris-claro);
+    text-transform: uppercase;
+  }
+
+  .social-handle {
+    font-family: 'Jost', sans-serif;
+    font-size: 18px;
+    color: var(--blanco);
+    font-weight: 300;
+  }
+
+  .footer-bottom {
+    padding: 28px 80px;
+    background: var(--negro);
+    border-top: 1px solid rgba(201,168,76,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p {
+    font-size: 11px;
+    color: rgba(136,136,136,0.5);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-bottom .dorado { color: var(--dorado); }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+
+    .hero { grid-template-columns: 1fr; min-height: 100svh; }
+    .hero-left { padding: 100px 28px 60px; }
+    .hero-right { display: none; }
+
+    .logo-section { padding: 56px 28px; }
+
+    .about { grid-template-columns: 1fr; padding: 80px 28px; gap: 48px; }
+    .about-text p { max-width: 100%; }
+
+    .products { padding: 80px 28px 80px; }
+    .products-grid { grid-template-columns: 1fr 1fr; }
+
+    .feature { grid-template-columns: 1fr; padding: 0 28px 80px; }
+    .feature-text { padding: 40px 28px; }
+
+    .stats { grid-template-columns: 1fr 1fr; padding: 60px 28px; }
+    .stat-num { font-size: 40px; }
+
+    .footer { grid-template-columns: 1fr; padding: 60px 28px; gap: 48px; }
+    .footer-bottom { padding: 20px 28px; flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
 </head>
 <body>
 
-<!-- ─── NAV ─── -->
+<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">Concreta Studio</a>
   <ul class="nav-links">
@@ -18,42 +624,76 @@
   </ul>
 </nav>
 
-<!-- ─── HERO ─── -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-left">
     <div class="hero-eyebrow">Diseño en Concreto</div>
     <h1 class="hero-title">
       Hecho a mano.<br>
-      <em>Diseñado</em><br>para durar.
+      <em style="font-style:normal;color:var(--dorado)">Diseñado</em><br>para durar.
     </h1>
     <p class="hero-subtitle">Piezas artesanales, minimalistas y atemporales para tus espacios.</p>
     <p class="hero-desc">
-      Cada pieza nace de una mezcla cuidadosa de cemento y diseño deliberado.
-      No producimos en serie — moldeamos a mano objetos que transforman
+      Cada pieza nace de una mezcla cuidadosa de cemento y diseño deliberado. 
+      No producimos en serie — moldeamos a mano objetos que transforman 
       los rincones cotidianos en algo memorable.
     </p>
     <a href="#productos" class="btn-primary">Ver colección</a>
   </div>
   <div class="hero-right">
-    <img
-      class="hero-img"
-      src="img/hero-vasos-bw.jpg"
-      alt="Porta vasos de cemento Concreta Studio"
-    >
+    <!-- SVG placeholder que simula la foto del portavasos en B&W -->
+    <svg viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;position:absolute;inset:0">
+      <rect width="600" height="700" fill="#0d0d0d"/>
+      <!-- mesa -->
+      <ellipse cx="300" cy="520" rx="320" ry="60" fill="#1a1a1a"/>
+      <!-- soporte porta-vasos -->
+      <ellipse cx="200" cy="480" rx="70" ry="22" fill="#1c1c1c"/>
+      <rect x="130" y="390" width="140" height="92" rx="12" fill="#1c1c1c"/>
+      <ellipse cx="200" cy="390" rx="70" ry="22" fill="#252525"/>
+      <!-- discos apilados -->
+      <ellipse cx="200" cy="405" rx="58" ry="16" fill="#2a2a2a"/>
+      <ellipse cx="200" cy="395" rx="58" ry="16" fill="#303030"/>
+      <ellipse cx="200" cy="385" rx="58" ry="16" fill="#353535"/>
+      <!-- vaso grande -->
+      <path d="M330 260 Q290 280 295 450 Q295 470 360 470 Q425 470 425 450 Q430 280 390 260 Z" fill="#1e1e1e" opacity="0.5"/>
+      <path d="M330 260 Q290 280 295 450 Q295 470 360 470 Q425 470 425 450 Q430 280 390 260 Z" fill="none" stroke="#555" stroke-width="1"/>
+      <!-- hexágonos en el vaso -->
+      <g opacity="0.3" stroke="#aaa" stroke-width="0.6" fill="none">
+        <polygon points="345,300 355,294 365,300 365,312 355,318 345,312"/>
+        <polygon points="365,300 375,294 385,300 385,312 375,318 365,312"/>
+        <polygon points="355,318 365,312 375,318 375,330 365,336 355,330"/>
+        <polygon points="340,320 350,314 360,320 360,332 350,338 340,332"/>
+        <polygon points="380,318 390,312 400,318 400,330 390,336 380,330"/>
+        <polygon points="348,338 358,332 368,338 368,350 358,356 348,350"/>
+        <polygon points="368,338 378,332 388,338 388,350 378,356 368,350"/>
+        <polygon points="356,356 366,350 376,356 376,368 366,374 356,368"/>
+        <polygon points="345,374 355,368 365,374 365,386 355,392 345,386"/>
+        <polygon points="365,374 375,368 385,374 385,386 375,392 365,386"/>
+        <polygon points="352,392 362,386 372,392 372,404 362,410 352,404"/>
+      </g>
+      <!-- disco debajo del vaso grande -->
+      <ellipse cx="360" cy="468" rx="42" ry="10" fill="#222"/>
+      <!-- brillo -->
+      <line x1="0" y1="0" x2="600" y2="700" stroke="rgba(201,168,76,0.03)" stroke-width="200"/>
+    </svg>
   </div>
 </section>
 
-<!-- ─── LOGO CENTRADO ─── -->
+<!-- LOGO CENTERED -->
 <section class="logo-section">
-  <img src="img/logo-circulo.jpg" alt="Concreta Studio logo">
+  <!-- Logo CS recreado en SVG -->
+  <svg class="logo-cs" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+    <path d="M55 14 A28 28 0 1 0 55 38" stroke="#c9a84c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M25 42 A22 22 0 1 1 25 66" stroke="#c9a84c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
   <div class="logo-name">Concreta Studio</div>
   <div class="logo-tagline">Piezas artesanales · Minimalistas · Atemporales</div>
 </section>
 
-<!-- ─── NOSOTROS ─── -->
+<!-- NOSOTROS -->
 <section class="about" id="nosotros">
   <div class="about-text">
-    <h2>Detalles que hacen <em>la diferencia</em></h2>
+    <h2>Detalles que hacen <em style="font-style:normal;color:var(--dorado)">la diferencia</em></h2>
     <p>Concreta Studio nace de la convicción de que los objetos del día a día merecen ser bellos. Trabajamos el cemento con las manos para crear piezas que no siguen tendencias — las trascienden.</p>
     <p>Cada molde, cada textura, cada acabado refleja horas de trabajo artesanal. El resultado: objetos con carácter propio que elevan cualquier espacio donde residan.</p>
   </div>
@@ -81,7 +721,7 @@
   </div>
 </section>
 
-<!-- ─── PRODUCTOS ─── -->
+<!-- PRODUCTOS -->
 <section class="products" id="productos">
   <div class="section-header">
     <h2>Colección</h2>
@@ -89,24 +729,85 @@
   </div>
   <div class="products-grid">
 
+    <!-- Porta Vasos -->
     <div class="product-card">
-      <img src="img/producto-portavasos-color.jpg" alt="Porta Vasos de cemento">
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+        <rect width="400" height="400" fill="#111"/>
+        <ellipse cx="160" cy="240" rx="75" ry="22" fill="#1a1a1a"/>
+        <rect x="85" y="160" width="150" height="82" rx="10" fill="#1a1a1a"/>
+        <ellipse cx="160" cy="160" rx="75" ry="22" fill="#232323"/>
+        <ellipse cx="160" cy="173" rx="62" ry="16" fill="#2a2a2a"/>
+        <ellipse cx="160" cy="163" rx="62" ry="16" fill="#2f2f2f"/>
+        <ellipse cx="160" cy="153" rx="62" ry="16" fill="#353535"/>
+        <!-- discos separados a la derecha -->
+        <ellipse cx="300" cy="290" rx="50" ry="13" fill="#252525"/>
+        <ellipse cx="300" cy="278" rx="50" ry="13" fill="#2a2a2a"/>
+        <ellipse cx="300" cy="266" rx="50" ry="13" fill="#303030"/>
+        <ellipse cx="300" cy="254" rx="50" ry="13" fill="#353535"/>
+        <!-- luz dorada suave -->
+        <radialGradient id="g1" cx="50%" cy="30%">
+          <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.08"/>
+          <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+        </radialGradient>
+        <rect width="400" height="400" fill="url(#g1)"/>
+      </svg>
       <div class="product-card-info">
         <div class="product-tag">Cemento · Set x6</div>
         <div class="product-name">Porta Vasos</div>
       </div>
     </div>
 
+    <!-- Porta Velas -->
     <div class="product-card">
-      <img src="img/producto-portavelas.jpg" alt="Porta Velas de cemento">
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+        <rect width="400" height="400" fill="#0e0e0e"/>
+        <!-- base almohada -->
+        <rect x="80" y="210" width="240" height="90" rx="22" fill="#1a1a1a"/>
+        <ellipse cx="200" cy="210" rx="120" ry="28" fill="#202020"/>
+        <!-- vela -->
+        <ellipse cx="200" cy="205" rx="36" ry="10" fill="#d0cbc0"/>
+        <rect x="164" y="175" width="72" height="30" rx="5" fill="#d8d3c8"/>
+        <!-- flama -->
+        <ellipse cx="200" cy="165" rx="10" ry="18" fill="#f0a020" opacity="0.9"/>
+        <ellipse cx="200" cy="168" rx="5" ry="12" fill="#fff" opacity="0.6"/>
+        <!-- luz cálida -->
+        <radialGradient id="g2" cx="50%" cy="42%">
+          <stop offset="0%" stop-color="#f0a020" stop-opacity="0.25"/>
+          <stop offset="60%" stop-color="#c9a84c" stop-opacity="0.05"/>
+          <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+        </radialGradient>
+        <rect width="400" height="400" fill="url(#g2)"/>
+      </svg>
       <div class="product-card-info">
         <div class="product-tag">Cemento · Artesanal</div>
         <div class="product-name">Porta Velas</div>
       </div>
     </div>
 
+    <!-- Joyero -->
     <div class="product-card">
-      <img src="img/producto-joyero.jpg" alt="Joyero y porta objetos de cemento">
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+        <rect width="400" height="400" fill="#111"/>
+        <!-- bandeja ovalada -->
+        <rect x="60" y="190" width="280" height="68" rx="34" fill="#1e1e1e"/>
+        <rect x="68" y="196" width="264" height="56" rx="30" fill="#161616"/>
+        <!-- llaves -->
+        <circle cx="140" cy="224" r="12" fill="none" stroke="#8a7a50" stroke-width="2"/>
+        <line x1="140" y1="236" x2="140" y2="258" stroke="#8a7a50" stroke-width="2"/>
+        <line x1="134" y1="244" x2="148" y2="244" stroke="#8a7a50" stroke-width="1.5"/>
+        <line x1="134" y1="252" x2="148" y2="252" stroke="#8a7a50" stroke-width="1.5"/>
+        <!-- anillos -->
+        <circle cx="220" cy="224" r="10" fill="none" stroke="#c9a84c" stroke-width="2.5"/>
+        <circle cx="240" cy="228" r="8" fill="none" stroke="#c9a84c" stroke-width="2"/>
+        <!-- cadena -->
+        <path d="M270 215 Q280 222 275 232 Q270 240 280 245" fill="none" stroke="#c9a84c" stroke-width="1.2"/>
+        <circle cx="283" cy="248" r="5" fill="#c9a84c" opacity="0.6"/>
+        <radialGradient id="g3" cx="50%" cy="40%">
+          <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.06"/>
+          <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+        </radialGradient>
+        <rect width="400" height="400" fill="url(#g3)"/>
+      </svg>
       <div class="product-card-info">
         <div class="product-tag">Cemento · Minimalista</div>
         <div class="product-name">Joyero / Porta Objetos</div>
@@ -116,10 +817,49 @@
   </div>
 </section>
 
-<!-- ─── PIEZA DESTACADA ─── -->
+<!-- FEATURE PRODUCT -->
 <section class="feature">
   <div class="feature-img">
-    <img src="img/producto-portavasos-bw.jpg" alt="Porta Vasos detalle">
+    <svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+      <rect width="600" height="450" fill="#0c0c0c"/>
+      <!-- mesa oscura -->
+      <rect x="0" y="280" width="600" height="170" fill="#111"/>
+      <!-- soporte -->
+      <ellipse cx="220" cy="275" rx="85" ry="24" fill="#1c1c1c"/>
+      <rect x="135" y="175" width="170" height="102" rx="14" fill="#1c1c1c"/>
+      <ellipse cx="220" cy="175" rx="85" ry="24" fill="#222"/>
+      <!-- discos -->
+      <ellipse cx="220" cy="190" rx="70" ry="17" fill="#282828"/>
+      <ellipse cx="220" cy="177" rx="70" ry="17" fill="#2e2e2e"/>
+      <ellipse cx="220" cy="164" rx="70" ry="17" fill="#333"/>
+      <!-- vasos grandes -->
+      <path d="M360 80 Q320 105 325 268 Q325 285 395 285 Q465 285 465 268 Q470 105 430 80 Z" fill="#181818" opacity="0.7"/>
+      <path d="M360 80 Q320 105 325 268 Q325 285 395 285 Q465 285 465 268 Q470 105 430 80 Z" fill="none" stroke="#444" stroke-width="0.8"/>
+      <!-- hexágonos -->
+      <g opacity="0.25" stroke="#ccc" stroke-width="0.5" fill="none">
+        <polygon points="368,110 380,103 392,110 392,124 380,131 368,124"/>
+        <polygon points="392,110 404,103 416,110 416,124 404,131 392,124"/>
+        <polygon points="380,131 392,124 404,131 404,145 392,152 380,145"/>
+        <polygon points="368,150 380,143 392,150 392,164 380,171 368,164"/>
+        <polygon points="392,150 404,143 416,150 416,164 404,171 392,164"/>
+        <polygon points="374,171 386,164 398,171 398,185 386,192 374,185"/>
+        <polygon points="398,171 410,164 422,171 422,185 410,192 398,185"/>
+        <polygon points="380,192 392,185 404,192 404,206 392,213 380,206"/>
+        <polygon points="368,213 380,206 392,213 392,227 380,234 368,227"/>
+        <polygon points="392,213 404,206 416,213 416,227 404,234 392,227"/>
+      </g>
+      <!-- disco bajo vaso -->
+      <ellipse cx="395" cy="283" rx="50" ry="12" fill="#1e1e1e"/>
+      <!-- luz golden -->
+      <radialGradient id="g4" cx="65%" cy="25%">
+        <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.12"/>
+        <stop offset="100%" stop-color="transparent"/>
+      </radialGradient>
+      <rect width="600" height="450" fill="url(#g4)"/>
+      <!-- planta de fondo -->
+      <ellipse cx="80" cy="180" rx="45" ry="55" fill="#0f1a0f" opacity="0.7"/>
+      <ellipse cx="60" cy="160" rx="30" ry="40" fill="#0f1a0f" opacity="0.5"/>
+    </svg>
   </div>
   <div class="feature-text">
     <div class="label">Pieza destacada</div>
@@ -135,7 +875,7 @@
   </div>
 </section>
 
-<!-- ─── STATS ─── -->
+<!-- STATS -->
 <section class="stats">
   <div class="stat">
     <span class="stat-num">100%</span>
@@ -155,28 +895,34 @@
   </div>
 </section>
 
-<!-- ─── CONTACTO / FOOTER ─── -->
+<!-- CONTACTO / FOOTER -->
 <section class="footer" id="contacto">
   <div class="footer-left">
-    <h2>Encuentra<br>tu <em>pieza única</em></h2>
+    <h2>Encuentra<br>tu <em style="font-style:normal;color:var(--dorado)">pieza única</em></h2>
     <p>Seguinos en redes sociales para ver los lanzamientos más recientes, procesos artesanales y espacios transformados con nuestras piezas.</p>
     <div class="social-grid">
       <a class="social-row" href="https://instagram.com/concretastudio502" target="_blank" rel="noopener">
-        <svg class="social-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
         <div class="social-info">
           <div class="social-platform">Instagram</div>
           <div class="social-handle">@concretastudio502</div>
         </div>
       </a>
       <a class="social-row" href="https://facebook.com/concretastudio" target="_blank" rel="noopener">
-        <svg class="social-icon" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
         <div class="social-info">
           <div class="social-platform">Facebook</div>
           <div class="social-handle">@concretastudio</div>
         </div>
       </a>
       <a class="social-row" href="https://tiktok.com/@concretastudio502" target="_blank" rel="noopener">
-        <svg class="social-icon" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+        </svg>
         <div class="social-info">
           <div class="social-platform">TikTok</div>
           <div class="social-handle">@concretastudio502</div>
@@ -185,9 +931,13 @@
     </div>
   </div>
 
-  <div class="footer-logo-right">
-    <img src="img/logo-circulo.jpg" alt="Concreta Studio">
-    <span>Concreta Studio</span>
+  <!-- Logo grande derecha -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:20px;opacity:0.25">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:220px">
+      <path d="M140 36 A70 70 0 1 0 140 96" stroke="#c9a84c" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M60 108 A55 55 0 1 1 60 164" stroke="#c9a84c" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div style="font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.5em;color:#c9a84c;text-transform:uppercase;font-weight:300">Concreta Studio</div>
   </div>
 </section>
 
