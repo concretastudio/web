@@ -2,7 +2,7 @@
    CONCRETA STUDIO — styles.css
    ═══════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&display=swap');
 
 /* ─── TOKENS ─── */
 :root {
@@ -48,7 +48,7 @@ nav {
 }
 
 .nav-logo {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-weight: 300;
   font-size: 13px;
   letter-spacing: 0.28em;
@@ -112,7 +112,7 @@ nav {
 }
 
 .hero-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-weight: 300;
   font-size: clamp(52px, 6vw, 88px);
   line-height: 1.05;
@@ -121,13 +121,13 @@ nav {
 }
 
 .hero-title em {
-  font-style: italic;
+  
   color: var(--dorado);
 }
 
 .hero-subtitle {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
+  font-family: 'Jost', sans-serif;
+  
   font-size: clamp(16px, 2vw, 22px);
   color: var(--gris-claro);
   font-weight: 300;
@@ -206,7 +206,7 @@ nav {
 }
 
 .logo-name {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-weight: 300;
   font-size: 13px;
   letter-spacing: 0.5em;
@@ -232,7 +232,7 @@ nav {
 }
 
 .about-text h2 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-weight: 300;
   font-size: clamp(36px, 4vw, 60px);
   line-height: 1.1;
@@ -241,7 +241,7 @@ nav {
 }
 
 .about-text h2 em {
-  font-style: italic;
+  
   color: var(--dorado);
 }
 
@@ -276,7 +276,7 @@ nav {
 }
 
 .pillar h3 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-weight: 400;
   font-size: 18px;
   color: var(--blanco);
@@ -304,7 +304,7 @@ nav {
 }
 
 .section-header h2 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-weight: 300;
   font-size: clamp(32px, 4vw, 52px);
   color: var(--blanco);
@@ -367,7 +367,7 @@ nav {
 }
 
 .product-name {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-size: 26px;
   font-weight: 300;
   color: var(--blanco);
@@ -412,7 +412,7 @@ nav {
 }
 
 .feature-text h2 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-weight: 300;
   font-size: clamp(30px, 3vw, 48px);
   line-height: 1.1;
@@ -421,8 +421,8 @@ nav {
 }
 
 .feature-text .sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
+  font-family: 'Jost', sans-serif;
+  
   font-size: 15px;
   color: var(--gris-claro);
   margin-bottom: 32px;
@@ -473,7 +473,7 @@ nav {
 }
 
 .stat-num {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-size: 56px;
   font-weight: 300;
   color: var(--dorado);
@@ -501,7 +501,7 @@ nav {
 }
 
 .footer-left h2 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-weight: 300;
   font-size: clamp(28px, 3.5vw, 48px);
   line-height: 1.15;
@@ -510,7 +510,7 @@ nav {
 }
 
 .footer-left h2 em {
-  font-style: italic;
+  
   color: var(--dorado);
 }
 
@@ -557,7 +557,7 @@ nav {
 }
 
 .social-handle {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-size: 18px;
   color: var(--blanco);
   font-weight: 300;
@@ -578,7 +578,7 @@ nav {
 }
 
 .footer-logo-right span {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-size: 12px;
   letter-spacing: 0.5em;
   color: var(--dorado);
