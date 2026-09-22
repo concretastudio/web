@@ -452,6 +452,111 @@ nav {
 .success-close:hover { background: var(--dorado); color: var(--negro); }
 
 /* ═══════════════════════════════════════
+   PRODUCT DETAIL MODAL
+═══════════════════════════════════════ */
+.pdp-overlay {
+  position: fixed; inset: 0; z-index: 450;
+  background: rgba(0,0,0,0.88);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.pdp-overlay.open { opacity: 1; pointer-events: all; }
+.pdp-modal {
+  background: var(--negro-suave);
+  border: 1px solid var(--dorado-opaco);
+  width: 100%; max-width: 820px;
+  max-height: 92vh; overflow-y: auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  transform: translateY(28px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pdp-overlay.open .pdp-modal { transform: translateY(0); }
+.pdp-modal::-webkit-scrollbar { width: 3px; }
+.pdp-modal::-webkit-scrollbar-thumb { background: var(--gris-medio); }
+.pdp-img-side {
+  position: relative; overflow: hidden;
+  min-height: 380px;
+}
+.pdp-img-side img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.85) contrast(1.05);
+  display: block;
+}
+.pdp-close {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(10,10,10,0.7); border: 1px solid var(--gris-medio);
+  color: var(--gris-claro); width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 18px; line-height: 1;
+  transition: color 0.2s, border-color 0.2s; z-index: 2;
+}
+.pdp-close:hover { color: var(--blanco); border-color: var(--dorado); }
+.pdp-info-side {
+  padding: 40px 36px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.pdp-tag {
+  font-size: 9px; letter-spacing: 0.35em; color: var(--dorado);
+  text-transform: uppercase;
+}
+.pdp-name {
+  font-family: 'Jost', sans-serif; font-size: 26px; font-weight: 300;
+  color: var(--blanco); line-height: 1.2;
+}
+.pdp-divider {
+  width: 32px; height: 1px; background: var(--dorado);
+}
+.pdp-desc {
+  font-size: 14px; line-height: 1.9; color: var(--gris-claro);
+}
+.pdp-details {
+  background: var(--negro); border: 1px solid var(--gris);
+  padding: 16px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.pdp-detail-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px;
+}
+.pdp-detail-row span:first-child {
+  font-size: 9px; letter-spacing: 0.25em; color: var(--gris-claro);
+  text-transform: uppercase;
+}
+.pdp-detail-row span:last-child { color: var(--blanco); font-weight: 300; }
+.pdp-footer {
+  margin-top: auto;
+  padding-top: 20px; border-top: 1px solid var(--gris);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+}
+.pdp-price {
+  font-family: 'Jost', sans-serif; font-size: 30px; font-weight: 300;
+  color: var(--dorado);
+}
+.pdp-price span { font-size: 15px; color: var(--gris-claro); vertical-align: super; }
+.pdp-add-btn {
+  background: var(--dorado); color: var(--negro);
+  border: none; padding: 13px 28px;
+  font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.3s;
+  white-space: nowrap;
+}
+.pdp-add-btn:hover:not(:disabled) { background: var(--dorado-claro); }
+.pdp-add-btn:disabled { background: var(--gris); color: var(--gris-claro); cursor: not-allowed; }
+.pdp-in-cart-label {
+  font-size: 10px; letter-spacing: 0.2em; color: var(--exito);
+  text-transform: uppercase; display: none;
+}
+@media (max-width: 680px) {
+  .pdp-modal { grid-template-columns: 1fr; }
+  .pdp-img-side { min-height: 260px; }
+  .pdp-info-side { padding: 28px 24px; }
+}
+
+/* ═══════════════════════════════════════
    TOAST
 ═══════════════════════════════════════ */
 .toast {
@@ -648,6 +753,30 @@ nav {
   </div>
 </div>
 
+<!-- ══════════ PRODUCT DETAIL MODAL ══════════ -->
+<div class="pdp-overlay" id="pdpOverlay" onclick="onPdpOverlayClick(event)">
+  <div class="pdp-modal" id="pdpModal" role="dialog" aria-modal="true" aria-label="Ficha de producto">
+    <div class="pdp-img-side">
+      <button class="pdp-close" onclick="closePdp()" aria-label="Cerrar">✕</button>
+      <img id="pdpImg" src="" alt="">
+    </div>
+    <div class="pdp-info-side">
+      <div class="pdp-tag" id="pdpTag"></div>
+      <div class="pdp-name" id="pdpName"></div>
+      <div class="pdp-divider"></div>
+      <div class="pdp-desc" id="pdpDesc"></div>
+      <div class="pdp-details" id="pdpDetails"></div>
+      <div class="pdp-footer">
+        <div class="pdp-price"><span>Q</span><span id="pdpPrice"></span></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+          <button class="pdp-add-btn" id="pdpAddBtn" onclick="pdpAddToCart()">Agregar al carrito</button>
+          <span class="pdp-in-cart-label" id="pdpInCart">✓ En tu carrito</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════ TOAST ══════════ -->
 <div class="toast" id="toast"></div>
 
@@ -657,7 +786,7 @@ nav {
    ► Reemplaza APPS_SCRIPT_URL con la URL de tu
      implementación de Apps Script (Web App URL)
 ══════════════════════════════════════════════════════ */
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUKfygGXl1C_FJPX9ezNMnEvt1wlRlKR3mvdm8WvwTsW2xJnlvhYad9IpIi7AxQGZyCw/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9G7V1pKLpkVqA2oKrz7M1IBf1BhpZOCPECyAHfH7_agyWyWNNcx64Cd31ZPRiD9o74Q/exec";
 
 /* ══════════════════════════════════════════════════════
    CATÁLOGO LOCAL (fallback / display)
@@ -712,7 +841,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function fetchStock() {
   if (APPS_SCRIPT_URL === "TU_URL_DE_APPS_SCRIPT_AQUÍ") return;
   try {
-    const res  = await fetch(APPS_SCRIPT_URL);
+    const res  = await fetch(APPS_SCRIPT_URL, { redirect: "follow" });
     const data = await res.json();
     if (data.ok && data.stock) {
       CATALOG.forEach(p => {
@@ -738,13 +867,13 @@ function renderProducts() {
 
     return `
     <article class="product-card" id="card-${p.id}">
-      <div class="product-img-wrap">
+      <div class="product-img-wrap" onclick="openPdp('${p.id}')" style="cursor:pointer;">
         <img src="${p.img}" alt="${p.name}" loading="lazy">
       </div>
       <div class="product-body">
-        <div class="product-tag">${p.tag}</div>
-        <div class="product-name">${p.name}</div>
-        <div class="product-desc">${p.desc}</div>
+        <div class="product-tag" onclick="openPdp('${p.id}')" style="cursor:pointer;">${p.tag}</div>
+        <div class="product-name" onclick="openPdp('${p.id}')" style="cursor:pointer;">${p.name}</div>
+        <div class="product-desc" onclick="openPdp('${p.id}')" style="cursor:pointer;">${p.desc}</div>
         <div class="product-footer">
           <div>
             <div class="product-price"><span>Q</span>${p.price.toFixed(2)}</div>
@@ -960,6 +1089,8 @@ async function submitOrder() {
 
     const res  = await fetch(APPS_SCRIPT_URL, {
       method: "POST",
+      redirect: "follow",
+      headers: { "Content-Type": "text/plain" },
       body: JSON.stringify(payload)
     });
     const data = await res.json();
@@ -1027,6 +1158,103 @@ function showToast(msg, isError = false) {
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+/* ══════════════════════════════════════════════════════
+   PRODUCT DETAIL (FICHA)
+══════════════════════════════════════════════════════ */
+// Detalles adicionales por producto (materiales, dimensiones, cuidados)
+const PRODUCT_DETAILS = {
+  portavasos: [
+    { label: "Material",    value: "Cemento pigmentado negro" },
+    { label: "Contenido",   value: "6 discos + soporte cilíndrico" },
+    { label: "Dimensiones", value: "Ø 9 cm por disco · Soporte 10 cm alto" },
+    { label: "Cuidado",     value: "Superficie sellada · Limpiar con paño seco" },
+    { label: "Hecho en",    value: "Guatemala · Artesanal" },
+  ],
+  portavelas: [
+    { label: "Material",    value: "Cemento artesanal" },
+    { label: "Vela",        value: "Compatible con tealight estándar (Ø 3.8 cm)" },
+    { label: "Dimensiones", value: "Aprox. 8 × 8 × 4 cm" },
+    { label: "Cuidado",     value: "No sumergir en agua · Limpiar en seco" },
+    { label: "Hecho en",    value: "Guatemala · Artesanal" },
+  ],
+  joyero: [
+    { label: "Material",    value: "Cemento minimalista" },
+    { label: "Forma",       value: "Oval con bordes elevados" },
+    { label: "Dimensiones", value: "Aprox. 18 × 12 × 2.5 cm" },
+    { label: "Cuidado",     value: "Superficie sellada · Evitar humedad prolongada" },
+    { label: "Hecho en",    value: "Guatemala · Artesanal" },
+  ],
+};
+
+let currentPdpId = null;
+
+function openPdp(id) {
+  const p = CATALOG.find(x => x.id === id);
+  if (!p) return;
+  currentPdpId = id;
+
+  document.getElementById("pdpImg").src  = p.img;
+  document.getElementById("pdpImg").alt  = p.name;
+  document.getElementById("pdpTag").textContent  = p.tag;
+  document.getElementById("pdpName").textContent = p.name;
+  document.getElementById("pdpDesc").textContent = p.desc;
+  document.getElementById("pdpPrice").textContent = p.price.toFixed(2);
+
+  // Detalles
+  const details = PRODUCT_DETAILS[id] || [];
+  const avail   = stock[id] ?? p.stock;
+  const allDetails = [
+    ...details,
+    { label: "Disponibilidad", value: avail === 0 ? "Sin stock" : avail <= 3 ? `Últimas ${avail} unidades` : "En stock" }
+  ];
+  document.getElementById("pdpDetails").innerHTML = allDetails.map(d =>
+    `<div class="pdp-detail-row">
+       <span>${d.label}</span>
+       <span>${d.value}</span>
+     </div>`
+  ).join("");
+
+  // Botón
+  const btn     = document.getElementById("pdpAddBtn");
+  const inCart  = document.getElementById("pdpInCart");
+  const inCartNow = (cart[id] || 0) > 0;
+  if (avail === 0) {
+    btn.disabled    = true;
+    btn.textContent = "Sin stock";
+  } else if (inCartNow) {
+    btn.disabled    = false;
+    btn.textContent = "Agregar otro";
+    inCart.style.display = "block";
+  } else {
+    btn.disabled    = false;
+    btn.textContent = "Agregar al carrito";
+    inCart.style.display = "none";
+  }
+
+  document.getElementById("pdpOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closePdp() {
+  document.getElementById("pdpOverlay").classList.remove("open");
+  document.body.style.overflow = "";
+  currentPdpId = null;
+}
+
+function onPdpOverlayClick(e) {
+  if (e.target === document.getElementById("pdpOverlay")) closePdp();
+}
+
+function pdpAddToCart() {
+  if (!currentPdpId) return;
+  addToCart(currentPdpId);
+  // Actualizar label en la propia ficha
+  const btn    = document.getElementById("pdpAddBtn");
+  const inCart = document.getElementById("pdpInCart");
+  btn.textContent      = "Agregar otro";
+  inCart.style.display = "block";
+}
 </script>
 </body>
 </html>
